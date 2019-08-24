@@ -73,17 +73,27 @@ app.get('/posts/:id', (req, res) => {
 });
 
 //글 등록 : url은 동일하지만 post 방식으로 : restful 가이드라인..
-app.post('/posts', (req, res) => {
+app.post('/posts', async (req, res) => {
     //글 데이터가 클라이이언트로부터 올라오면 그 데이터를 몽고디비에 저장
     //저장하고 나면 잘 저장됐다라고 응답
 
     const post = req.body;
     //클라이언트의 요청 글 데이터로 스키마를 만들고
     const postModel = new Post(post);
-    //만든 스키마를 저장
-    postModel.save().then(() => {       
+    //만든 스키마를 저장. promise 패턴으로 확인
+    /* postModel.save().then(() => {       
         res.send('글 등록 완료! promise 패턴 ok');
-    });
+    }); */
+
+    //async await 패턴(함수 선언시 async 붙이고 비동기 처리할 부분에는 await라고 선언)
+    try{
+        const saved = await postModel.save();
+        res.json(saved);
+    }catch(err){
+        res.json(err);
+    }
+    
+
 
     /* 
     데이터가 form 방식(x-www-form-urlencoded)일 때
