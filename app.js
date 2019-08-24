@@ -81,9 +81,9 @@ app.post('/posts', (req, res) => {
     //클라이언트의 요청 글 데이터로 스키마를 만들고
     const postModel = new Post(post);
     //만든 스키마를 저장
-    postModel.save();
-
-    res.json('글 등록 완료!');
+    postModel.save().then(() => {       
+        res.send('글 등록 완료! promise 패턴 ok');
+    });
 
     /* 
     데이터가 form 방식(x-www-form-urlencoded)일 때
