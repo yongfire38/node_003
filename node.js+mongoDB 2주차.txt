@@ -1,0 +1,59 @@
+*깃허브 내 계정에 node_003이라고 올릴 거임. 그거 참고하면서 같이 볼 문서임.
+
+*node project는 npm으로 패키지 관리를 한다.
+
+*package.json 만드는 명령어(전체 루트 디렉토리에서 실행, 설치한 패키지의 버전을 관리하는 파일)
+C:\projects\node-first> npm init
+
+*서버 띄우는 js파일 만들기
+=>express 모듈 사용(설치는 터미널에서 npm install express)
+
+*노드 실행은 터미널에서 node 파일명 (또는 vscode에서 코드 러너로 돌려도 됨)
+
+*nodemon을 이용하면 소스 수정시마다 매번 서버를 내렸다 올릴 필요가 없음
+=>npm install nodemon -g (글로벌로 설치, 단 글로벌로 설치하면 버전 충돌 문제가 발생할 수 있음)
+=>npx nodemon 파일명 (터미널 실행, 프로젝트 폴더 내 설치되어 있는 nodemon을 찾아 실행)
+
+*package.json 에서
+
+"scripts": {
+    "start": "npx nodemon app.js"
+  }
+
+이렇게 수정해 두면 
+
+npm start 를 터미널에 입력하면 자동으로 npx nodemon app.js 실행
+이후로는 소스 수정 후 저장하면 자동으로 서버 재시작
+
+*restful api 에서 url을 만들때는 가이드라인이 있음
+*같은 url이라도 방식이 다르면 다른 명령
+ex) /articles : get 방식이면 전체 글 보기, /article/:id : get 방식이면 글 하나 보기
+    같은 url이라도 post 방식이면 글 쓰기
+
+ex) //restful api의 url 작성 가이드라인에 따라 get 방식+특정아이디이면 상세 보기
+app.get('/posts/:id', (req, res) => {
+    res.send(req.params.id + '번 글을 요청하셨네요.')
+});
+
+*mongoDB는 데이터 무결성 검증에 대해 오라클 만큼 까다롭지는 않음
+=>그 결과, 처리 속도가 오라클보다 빠름
+
+*body-parser 미들웨어 
+=>body-parser : 프론트에서 던지는 데이터가 form 방식(x-www-form-urlencoded)일 때 파싱을 하기 위한 미들웨어
+
+*전체 글 보기는 사실상 불가능(몇만 건 이면 그걸 다?)
+=>페이징 처리
+=>페이징은 get 방식의 경우 쿼리스트링으로 
+ex) http://localhost:3000/posts?page=2
+
+*mongoDB
+=>설치와 클라우드 2가지 방법이 있음
+=>클라우드는 atlas, 설치형은 server(community server는 무료)
+=>mongoDB community compass는 무료 클라이언트 도구
+
+*mongoose : node - mongoDB간 미들웨어(ODM : object-document mapping)
+
+*비동기 처리 방법
+1.콜백 함수 : 제일 구식..잘 알려진 거
+2.promise 패턴 : then() 이용
+3.async await : 지원이 되어야.. 앞으로는 이 방향으로 갈 것.
